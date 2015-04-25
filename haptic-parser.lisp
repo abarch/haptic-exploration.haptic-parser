@@ -92,14 +92,20 @@
   (lambda (item)
     (vector-push-extend (funcall key item) to)))
 
+(defun timestamp-to-universal (timestamp)
+  (+ (/ timestamp 1000)
+     (load-time-value (encode-universal-time 0 0 0 1 1 1970 0))))
+
 (defun process-records (input record-processor)
   (map-file-lines
    input
    (lambda (input)
-     (let ((record (make-instance 'record
-                                  :timestamp (local-time:unix-to-timestamp (parse-integer (read-field input))))))
+     (let ((record (make-instance 'record :timestamp (timestamp-to-universal (parse-integer (read-field input))))))
        (map-line-fields input (pusher (channels record) :key #'parse-float:parse-float))
        (funcall record-processor record)))))
+
+(defmacro do-records ((record input) &body body)
+  `(process-records ,input (lambda (,record) ,@body)))
 
 (defun parse-file (input)
   (let ((file (make-instance 'haptic-file :file (pathname input))))
