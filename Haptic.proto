@@ -1,0 +1,9 @@
+package rst.devices.haptic;
+
+import "rst/math/Vec3DDouble.proto";
+
+option java_outer_classname = "HapticType";
+
+message Haptic {
+    repeated uint32 channels = 1;
+}
