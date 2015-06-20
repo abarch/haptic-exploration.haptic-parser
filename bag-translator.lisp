@@ -10,7 +10,7 @@
 
 (defun convert (input output)
   (with-default-bag (bag output)
-    (with-bag-channel (channel bag "/data/haptic" ".rst.devices.Haptic")
+    (with-bag-channel (channel bag "/haptic/data" "rst.devices.Haptic")
       (with-file-descriptor (stream file input)
         (declare (ignore file))
         (do-records (record stream)
