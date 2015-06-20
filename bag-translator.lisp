@@ -8,13 +8,17 @@
    'rst.devices.haptic:haptic
    :channels (map 'vector #'round (channels record))))
 
+(defmacro with-haptic-channel ((channel bag pathname &rest options) &body body)
+  `(with-default-bag (,bag ,pathname ,@options)
+     (with-bag-channel (,channel ,bag "/haptic/data" "rst.devices.Haptic")
+       ,@body)))
+
 (defun convert (input output)
-  (with-default-bag (bag output)
-    (with-bag-channel (channel bag "/haptic/data" "rst.devices.Haptic")
-      (with-file-descriptor (stream file input)
-        (declare (ignore file))
-        (do-records (record stream)
-          (make-entry channel record (make-precise-timestamp (timestamp record))))))))
+  (with-haptic-channel (channel bag output)
+    (with-file-descriptor (stream file input)
+      (declare (ignore file))
+      (do-records (record stream)
+        (make-entry channel record (make-precise-timestamp (timestamp record)))))))
 
 (defun print-help ()
   (let ((system (asdf:find-system :haptic-bag-translator)))
