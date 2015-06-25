@@ -9,7 +9,7 @@
    :channels (map 'vector #'round (channels record))))
 
 (defmacro with-haptic-channel ((channel bag) &body body)
-  `(with-bag-channel (,channel ,bag "/haptic/data" "rst.devices.Haptic")
+  `(with-bag-channel (,channel ,bag "/haptic/data" ".rst.devices.haptic.Haptic")
      ,@body))
 
 (defun convert (input output)
