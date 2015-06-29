@@ -9,6 +9,7 @@
   :homepage "https://github.com/Shinmera/haptic-parser/"
   :serial T
   :components ((:file "parser-package")
-               (:file "haptic-parser"))
+               (:file "haptic-parser")
+               (:file "documentation"))
   :depends-on (:parse-float
                :local-time))
